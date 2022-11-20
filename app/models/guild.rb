@@ -6,4 +6,6 @@ class Guild < ApplicationRecord
   validates :point, presence: true
   validates :member_count, presence: true
   validates :guild_id, presence: true, uniqueness: true
+
+  has_many :guild_histories
 end
