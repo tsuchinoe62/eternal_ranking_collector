@@ -87,6 +87,8 @@ namespace :get_rankings do
     logger.info "Start collecting guild point data."
     data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=-1&col=guild&sub=1&limit=300&offset=0")
 
+    raise RuntimeError "Could not get response from API server." unless data
+
     data["res"].each do |g|
       guild = Guild.find_by(guild_id: g["guild_id"])
 
