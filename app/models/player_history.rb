@@ -4,5 +4,5 @@ class PlayerHistory < ApplicationRecord
   validates :talent_id, presence: true
   validates :stored_on, presence: true
 
-  belongs_to :user
+  belongs_to :player
 end
