@@ -11,4 +11,4 @@ RUN chmod +x /usr/bin/start.sh
 ENTRYPOINT ["start.sh"]
 EXPOSE 3000
 
-CMD["bin/start"]
+CMD ["bin/start"]
