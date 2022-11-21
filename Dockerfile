@@ -9,6 +9,6 @@ ADD . /myapp
 COPY start.sh /myapp/bin
 RUN chmod +x /myapp/bin/start.sh
 ENTRYPOINT ["start.sh"]
-EXPOSE 3000
+EXPOSE $PORT
 
 CMD ["bin/start"]
