@@ -6,8 +6,8 @@ ADD Gemfile /myapp/Gemfile
 ADD Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
 ADD . /myapp
-COPY start.sh /usr/bin
-RUN chmod +x /usr/bin/start.sh
+COPY start.sh /myapp/bin
+RUN chmod +x /myapp/bin/start.sh
 ENTRYPOINT ["start.sh"]
 EXPOSE 3000
 
