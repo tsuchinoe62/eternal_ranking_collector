@@ -5,6 +5,10 @@ WORKDIR /myapp
 ADD Gemfile /myapp/Gemfile
 ADD Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
-ADD . /myapp
+COPY . /myapp
+COPY start.sh /usr/bin/
+RUN chmod +x /usr/bin/start.sh
+ENTRYPOINT ["start.sh"]
 EXPOSE 8080
-CMD ["rm tmp/pids/server.pid; bin/rails assets:precompile && bin/rails s -p 8080"]
+CMD ["bin/start"]
+
