@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_20_121535) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_22_150434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,8 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_121535) do
     t.date "stored_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "guild_id"
-    t.index ["guild_id"], name: "index_guild_histories_on_guild_id"
+    t.integer "guild_id", null: false
   end
 
   create_table "guilds", force: :cascade do |t|
@@ -68,6 +67,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_121535) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "guild_histories", "guilds"
   add_foreign_key "player_histories", "players"
 end

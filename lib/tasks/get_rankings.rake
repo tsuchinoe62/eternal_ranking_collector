@@ -53,14 +53,17 @@ namespace :get_rankings do
           logger.info "Updated player #{player.attributes.inspect}"
         end
 
-        player_history = PlayerHistory.find_by(player_id: player.id, stored_on: Date.today)
+        today = DateTime.now.in_time_zone("Asia/Tokyo").to_date
+        player_history = PlayerHistory.find_by(player_id: player.id, stored_on: today)
         if player_history.nil?
-          player_history ||= PlayerHistory.create!(player_id: player.id, guild_id: u["guild_id"], score: u["score"],
-                                                   level: u["level"], talent_id: u["talent_id"], stored_on: Date.today)
+          player_history = PlayerHistory.create!(player_id: player.id, guild_id: u["guild_id"], score: u["score"],
+                                                   level: u["level"], talent_id: u["talent_id"], stored_on: today)
           logger.info "Created player history #{player_history.attributes.inspect}"
         end
       end
     end
+
+    logger.info "Finished collecting player cp data."
   end
 
   task guilds: :environment do
@@ -71,6 +74,7 @@ namespace :get_rankings do
 
     raise RuntimeError "Could not get response from API server." unless data
 
+    today = DateTime.now.in_time_zone("Asia/Tokyo").to_date
     data["res"].each do |g|
       guild = Guild.find_by(guild_id: g["guild_id"])
 
@@ -82,7 +86,14 @@ namespace :get_rankings do
         guild.update!(master: g["name"], score: g["score"])
         logger.info "Updated guild #{guild.attributes.inspect}"
       end
+
+      guild_history = GuildHistory.find_by(guild_id: guild.guild_id, stored_on: today)
+      if guild_history.nil?
+        guild_history = GuildHistory.create!(guild_id: guild.guild_id, master: g["name"], score: g["score"], member: 0, stored_on: today)
+        logger.info "Created guild history #{guild_history.attributes.inspect}"
+      end
     end
+    logger.info "Finished collecting guild cp data."
 
     logger.info "Start collecting guild point data."
     data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=-1&col=guild&sub=1&limit=300&offset=0")
@@ -101,10 +112,15 @@ namespace :get_rankings do
         logger.info "Updated guild #{guild.attributes.inspect}"
       end
     end
+    logger.info "Finished collecting guild score data."
 
     logger.info "Start updating guild member count."
     Guild.all.each do |g|
-      g.update!(member_count: Player.where(guild_id: g.guild_id).size)
+      member_count = Player.where(guild_id: g.guild_id).size
+      g.update!(member_count: member_count)
+      GuildHistory.find_by(guild_id: g.guild_id, stored_on: today)&.update!(member: member_count)
+      logger.info "Updated guild #{g.attributes.inspect}"
     end
+    logger.info "Finished updating guild member count."
   end
 end

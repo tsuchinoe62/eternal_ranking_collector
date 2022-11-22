@@ -7,5 +7,5 @@ class Guild < ApplicationRecord
   validates :member_count, presence: true
   validates :guild_id, presence: true, uniqueness: true
 
-  has_many :guild_histories
+  self.primary_key = "guild_id"
 end
