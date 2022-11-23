@@ -46,10 +46,10 @@ namespace :get_rankings do
 
         if player.nil?
           player = Player.create!(server: u["server"], name: u["name"], job: u["job"], guild_id: u["guild_id"],
-                                  score: u["score"], level: u["level"], talent_id: u["talent_id"])
+                                  score: u["score"], level: u["level"], talent_id: i)
           logger.info "Created player #{player.attributes.inspect}"
         else
-          player.update!(guild_id: u["guild_id"], score: u["score"], level: u["level"], talent_id: u["talent_id"])
+          player.update!(guild_id: u["guild_id"], score: u["score"], level: u["level"], talent_id: i)
           logger.info "Updated player #{player.attributes.inspect}"
         end
 
@@ -57,7 +57,7 @@ namespace :get_rankings do
         player_history = PlayerHistory.find_by(player_id: player.id, stored_on: today)
         if player_history.nil?
           player_history = PlayerHistory.create!(player_id: player.id, guild_id: u["guild_id"], score: u["score"],
-                                                   level: u["level"], talent_id: u["talent_id"], stored_on: today)
+                                                   level: u["level"], talent_id: i, stored_on: today)
           logger.info "Created player history #{player_history.attributes.inspect}"
         end
       end
