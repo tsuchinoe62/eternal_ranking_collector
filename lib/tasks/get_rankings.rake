@@ -37,7 +37,7 @@ namespace :get_rankings do
 
     Talent.pluck(:talent_id).each do |i|
       logger.debug "Start HTTP request."
-      data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=-1&col=talent&sub=#{i}&limit=300&offset=0")
+      data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=7&col=talent&sub=#{i}&limit=100&offset=0")
 
       raise RuntimeError "Could not get response from API server." unless data
 
@@ -70,7 +70,7 @@ namespace :get_rankings do
     logger.info "Start collecting guild cp data."
 
     logger.debug "Start HTTP request."
-    data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=-1&col=guild&sub=0&limit=300&offset=0")
+    data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=7&col=guild&sub=0&limit=100&offset=0")
 
     raise RuntimeError "Could not get response from API server." unless data
 
@@ -96,7 +96,7 @@ namespace :get_rankings do
     logger.info "Finished collecting guild cp data."
 
     logger.info "Start collecting guild point data."
-    data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=-1&col=guild&sub=1&limit=300&offset=0")
+    data = get_json("https://app.p-eternal.jp/api/game/get/ranking/?world_id=7&col=guild&sub=1&limit=100&offset=0")
 
     raise RuntimeError "Could not get response from API server." unless data
 
