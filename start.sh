@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # migration
-bin/rails db:migrate RAILS_ENV=production
+bin/rails db:migrate
 
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f tmp/pids/server.pid
