@@ -51,4 +51,6 @@ group :development do
   # gem "spring"
 
   gem "pry-rails"
+  gem "rubocop"
+  gem "rubocop-rails"
 end
