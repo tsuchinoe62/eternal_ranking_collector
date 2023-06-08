@@ -31,4 +31,4 @@
 # Ignore vscode config,
 /.vscode
 
-.env*
+.env
